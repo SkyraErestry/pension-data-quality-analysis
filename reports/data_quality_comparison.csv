@@ -1,0 +1,8 @@
+quality_check,raw_data,clean_data,issues_removed
+duplicate_rows,3,0,3
+missing_salaries,3,0,3
+missing_employers,1,0,1
+invalid_ages,2,0,2
+invalid_salaries,1,0,1
+invalid_contributions,1,0,1
+invalid_dates,2,0,2

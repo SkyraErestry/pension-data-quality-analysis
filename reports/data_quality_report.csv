@@ -1,0 +1,8 @@
+check,issues_found
+duplicate_rows,3
+missing_salaries,3
+missing_employers,1
+invalid_ages,2
+invalid_salaries,1
+invalid_contributions,1
+invalid_dates,2
