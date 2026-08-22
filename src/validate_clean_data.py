@@ -99,5 +99,5 @@ comparison.to_csv(
 )
 
 print(
-    f"\nVergleich gespeichert: {output_path}"
+    f"\nComparison saved: {output_path}"
 )

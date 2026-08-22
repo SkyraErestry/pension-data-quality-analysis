@@ -4,58 +4,55 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-# -------------------------
-# Report einlesen
-# -------------------------
-
-input_path = Path(
-    "reports/data_quality_comparison.csv"
-)
-
+input_path = Path("reports/data_quality_comparison.csv")
 df = pd.read_csv(input_path)
 
+label_mapping = {
+    "duplicate_rows": "Duplicate rows",
+    "missing_salaries": "Missing salaries",
+    "missing_employers": "Missing employers",
+    "invalid_ages": "Invalid ages",
+    "invalid_salaries": "Invalid salaries",
+    "invalid_contributions": "Invalid contributions",
+    "invalid_dates": "Invalid dates",
+}
 
-# -------------------------
-# Diagramm erstellen
-# -------------------------
+df["label"] = df["quality_check"].map(label_mapping)
 
-plt.figure(figsize=(10, 6))
+source_path = Path("data/raw/pension_records.csv")
 
-plt.bar(
-    df["quality_check"],
+fig = plt.figure(figsize=(10, 6))
+
+bars = plt.barh(
+    df["label"],
     df["raw_data"]
 )
 
+fig.canvas.manager.set_window_title(
+    f"Data Quality Analysis - {source_path.name}"
+)
+
 plt.title(
-    "Data Quality Issues in Raw Pension Data"
+    f"Detected Data Quality Issues\nSource: {source_path.name}"
 )
 
-plt.xlabel("Quality Check")
-plt.ylabel("Number of Issues")
+plt.xlabel("Number of issues")
+plt.ylabel("Quality issue")
 
-plt.xticks(
-    rotation=45,
-    ha="right"
-)
+
+for bar in bars:
+    width = bar.get_width()
+    plt.text(
+        width + 0.05,
+        bar.get_y() + bar.get_height() / 2,
+        f"{int(width)}",
+        va="center"
+    )
 
 plt.tight_layout()
 
-
-# -------------------------
-# Diagramm speichern
-# -------------------------
-
-output_path = Path(
-    "reports/data_quality_issues.png"
-)
-
-plt.savefig(
-    output_path,
-    dpi=150
-)
-
+output_path = Path("reports/data_quality_issues.png")
+plt.savefig(output_path, dpi=150)
 plt.show()
 
-print(
-    f"Diagramm gespeichert: {output_path}"
-)
+print(f"Figure saved: {output_path}")

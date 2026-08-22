@@ -86,5 +86,5 @@ df_clean.to_csv(
     index=False
 )
 
-print(f"Bereinigte Datensätze: {len(df_clean)}")
-print(f"Datei gespeichert: {output_path}")
+print(f"Cleaned records: {len(df_clean)}")
+print(f"File saved: {output_path}")

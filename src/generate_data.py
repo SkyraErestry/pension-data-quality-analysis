@@ -133,8 +133,8 @@ df.to_csv(
     index=False,
 )
 
-print(f"Datensatz gespeichert: {output_path}")
-print(f"Anzahl Datensätze: {len(df)}")
+print(f"File saved: {output_path}")
+print(f"Number of records: {len(df)}")
 
-print("\nErste fünf Datensätze:")
+print("\nFirst five records:")
 print(df.head())

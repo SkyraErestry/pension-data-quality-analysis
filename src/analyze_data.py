@@ -156,6 +156,66 @@ total_issues = (
     + invalid_dates_count
 )
 
+# -------------------------
+# Data Quality Scores
+# -------------------------
+
+# Completeness:
+# Eine Zeile gilt als vollständig, wenn alle Pflichtfelder befüllt sind.
+required_columns = [
+    "person_id",
+    "age",
+    "annual_salary_chf",
+    "entry_date",
+    "employer",
+    "annual_contribution_chf",
+]
+
+incomplete_rows = df[
+    required_columns
+].isna().any(axis=1)
+
+complete_rows = (~incomplete_rows).sum()
+
+completeness_score = (
+    complete_rows / len(df) * 100
+)
+
+
+# Validity:
+# Eine Zeile gilt als ungültig, wenn mindestens eine
+# fachliche Validierungsregel verletzt wird.
+invalid_rows = (
+    (df["age"] < 18)
+    | (df["age"] > 100)
+    | (df["annual_salary_chf"] <= 0)
+    | (df["annual_contribution_chf"] <= 0)
+    | parsed_entry_dates.isna()
+)
+
+valid_rows = (~invalid_rows).sum()
+
+validity_score = (
+    valid_rows / len(df) * 100
+)
+
+
+# Uniqueness:
+# person_id soll jede Person eindeutig identifizieren.
+unique_person_ids = df["person_id"].nunique()
+
+uniqueness_score = (
+    unique_person_ids / len(df) * 100
+)
+
+
+# Overall Data Quality Score
+overall_score = (
+    completeness_score
+    + validity_score
+    + uniqueness_score
+) / 3
+
 print("\n=== DATA QUALITY REPORT ===")
 
 print(f"Rows:                     {len(df)}")
@@ -169,6 +229,19 @@ print(f"Invalid dates:            {invalid_dates_count}")
 
 print("-" * 40)
 print(f"Total detected issues:    {total_issues}")
+
+print("\n=== DATA QUALITY SCORES ===")
+
+print(f"Completeness:              {completeness_score:.1f} %")
+print(f"Validity:                  {validity_score:.1f} %")
+print(f"Uniqueness:                {uniqueness_score:.1f} %")
+
+print("-" * 40)
+
+print(
+    f"Overall Data Quality Score: "
+    f"{overall_score:.1f} %"
+)
 
 report = pd.DataFrame(
     {
@@ -202,7 +275,42 @@ report.to_csv(
     index=False,
 )
 
+score_report = pd.DataFrame(
+    {
+        "dimension": [
+            "Completeness",
+            "Validity",
+            "Uniqueness",
+            "Overall Data Quality Score",
+        ],
+        "score_percent": [
+            completeness_score,
+            validity_score,
+            uniqueness_score,
+            overall_score,
+        ],
+    }
+)
+
+score_report["score_percent"] = (
+    score_report["score_percent"].round(1)
+)
+
+score_path = Path(
+    "reports/data_quality_scores.csv"
+)
+
+score_report.to_csv(
+    score_path,
+    index=False
+)
+
 print(
-    f"\nReport gespeichert: "
+    f"Score Report saved: "
+    f"{score_path}"
+)
+
+print(
+    f"\nReport saved: "
     f"{report_path}"
 )
