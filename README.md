@@ -69,6 +69,23 @@ Examples include:
 * invalid calendar dates
 * duplicate records
 
+## Data Quality Scores
+
+In addition to counting individual quality issues, the project calculates
+three data quality dimensions:
+
+| Dimension | Score |
+|---|---:|
+| Completeness | 99.6% |
+| Validity | 99.4% |
+| Uniqueness | 99.7% |
+| **Overall Data Quality Score** | **99.6%** |
+
+The overall score is calculated as the arithmetic mean of
+Completeness, Validity, and Uniqueness:
+
+Overall Score = (Completeness + Validity + Uniqueness) / 3
+
 ## Data Quality Rules
 
 The following validation rules are applied:
@@ -137,6 +154,7 @@ pension-data-quality-analysis/
 │
 ├── reports/
 │   ├── data_quality_report.csv
+│   ├── data_quality_scores.csv
 │   ├── data_quality_comparison.csv
 │   └── data_quality_issues.png
 │
@@ -214,12 +232,13 @@ During this project, I practiced:
 * validating cleaned data
 * generating data quality reports
 * visualizing analytical results with Matplotlib
+* calculating data quality metrics for completeness, validity, and uniqueness
+* combining quality dimensions into an overall data quality score
 
 ## Possible Future Improvements
 
 Possible extensions of the project include:
 
-* calculating an overall data quality score
 * exporting quality reports to Excel
 * creating an interactive dashboard
 * logging individual data quality violations

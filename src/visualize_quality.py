@@ -32,13 +32,21 @@ fig.canvas.manager.set_window_title(
     f"Data Quality Analysis - {source_path.name}"
 )
 
+plt.suptitle(
+    "Detected Data Quality Issues",
+    fontweight="bold",
+    fontsize=14
+)
+
 plt.title(
-    f"Detected Data Quality Issues\nSource: {source_path.name}"
+    f"Source: {source_path.name}",
+    fontsize=8
 )
 
 plt.xlabel("Number of issues")
 plt.ylabel("Quality issue")
 
+plt.gca().invert_yaxis()
 
 for bar in bars:
     width = bar.get_width()
